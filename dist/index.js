@@ -42,6 +42,8 @@ module.exports =
 /******/ 		// Load entry module and return exports
 /******/ 		return __webpack_require__(488);
 /******/ 	};
+/******/ 	// initialize runtime
+/******/ 	runtime(__webpack_require__);
 /******/
 /******/ 	// run startup
 /******/ 	return startup();
@@ -5623,15 +5625,34 @@ exports.getOctokit = getOctokit;
 /***/ }),
 
 /***/ 488:
-/***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
+/***/ (function(__unusedmodule, __webpack_exports__, __webpack_require__) {
 
-const core = __webpack_require__(117);
-const github = __webpack_require__(466);
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(117);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(466);
+/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
+
+
 
 try {
   console.log('Action running');
+  const myToken = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('myToken');
+  const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(myToken);
+
+  if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName === 'pull_request') {
+    const prNumber = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.number
+    console.log(prNumber);
+    console.log(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo);
+    const files = octokit.pulls.listFiles({
+      repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
+      pull_number: prNumber
+    });
+    console.log(files);
+  }
 } catch(error) {
-  core.setFailed(error.message);
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(error.message);
 }
 
 
@@ -9438,4 +9459,43 @@ module.exports = windowsRelease;
 
 /***/ })
 
-/******/ });
+/******/ },
+/******/ function(__webpack_require__) { // webpackRuntimeModules
+/******/ 	"use strict";
+/******/ 
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	!function() {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = function(exports) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	!function() {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = function(module) {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				function getDefault() { return module['default']; } :
+/******/ 				function getModuleExports() { return module; };
+/******/ 			__webpack_require__.d(getter, 'a', getter);
+/******/ 			return getter;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getter */
+/******/ 	!function() {
+/******/ 		// define getter function for harmony exports
+/******/ 		var hasOwnProperty = Object.prototype.hasOwnProperty;
+/******/ 		__webpack_require__.d = function(exports, name, getter) {
+/******/ 			if(!hasOwnProperty.call(exports, name)) {
+/******/ 				Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ }
+);
