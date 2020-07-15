@@ -1,0 +1,5 @@
+name: 'Security Linter'
+description: 'Finds security issues in pull requests'
+runs:
+  using: 'node12'
+  main: 'index.js'
